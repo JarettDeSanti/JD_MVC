@@ -27,6 +27,8 @@ Deployed application link: https://jd-mvc-4dde08bc11c5.herokuapp.com/
 
 ## Acknowledgements 
 
+This project was assisted with help from TA Daniel T.
+
 ## License
 
 Please refer to the LICENSE in the repository.
