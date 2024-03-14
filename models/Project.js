@@ -1,9 +1,36 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/connection');
+const { Model, DataTypes } = require("sequelize");
+const sequelize = require("../config/connection");
 
-class Project extends Model {}
 
-Project.init(
+class Post extends Model {
+  
+  static upvote(body, models) {
+    
+    return models.Vote.create({
+      user_id: body.user_id,
+      post_id: body.post_id,  
+    }).then(() => {
+      return Post.findOne({
+        where: {
+          id: body.post_id,
+        },
+        include: [
+            {
+              model: models.Comment,
+              attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+              include: {
+                model: models.User,
+                attributes: ['username']
+              }
+            }
+          ]
+      });
+    });
+  }
+}
+
+
+Post.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,37 +38,32 @@ Project.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
+    post_content: {
       type: DataTypes.STRING,
-    },
-    date_created: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-    },
-    needed_funding: {
-      type: DataTypes.FLOAT,
       allowNull: false,
     },
+    
     user_id: {
       type: DataTypes.INTEGER,
+      
       references: {
-        model: 'user',
-        key: 'id',
+        model: "user",
+        key: "id",
       },
     },
   },
   {
     sequelize,
-    timestamps: false,
+    timestamps: true,
     freezeTableName: true,
+    
     underscored: true,
-    modelName: 'project',
+    modelName: "post",
   }
 );
 
-module.exports = Project;
+module.exports = Post;
