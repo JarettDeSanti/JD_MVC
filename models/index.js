@@ -1,11 +1,8 @@
-const Post = require('./Post');
+const Post = require('./Project');
 const User = require('./User');
-const Comment = require('./Comment');
+const Comment = require('./Com');
 
 
-/*User.hasMany(Post, {
-    foreignKey: "user_id"
-});*/
 
 
 Post.belongsTo(User, {
@@ -19,15 +16,6 @@ Comment.belongsTo(User, {
     onDelete: "SET NULL"
 });
 
-/*Comment.belongsTo(Post, {
-    foreignKey: "post_id",
-    onDelete: "SET NULL"
-});
-
-User.hasMany(Comment, {
-    foreignKey: "user_id",
-    onDelete: "SET NULL"
-});*/
 
 Post.hasMany(Comment, {
     foreignKey: "post_id",
